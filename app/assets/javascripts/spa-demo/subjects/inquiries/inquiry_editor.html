@@ -1,0 +1,64 @@
+<form class="inquiry-form row" name="inquiryform">
+  <span class="inquiry_id id">{{$ctrl.item.id}}</span>
+  <span class="invalid">{{$ctrl.item.errors.full_messages}}</span>
+
+  <div class="inquiry-question row col-lg-12">
+    <label class="col-xs-3">Question:</label>
+    <textarea class="col-xs-9"
+           name="inquiry-question"
+           data-ng-model="$ctrl.item.question"
+           ng-readonly="!$ctrl.authz.canUpdate"
+           required="required"
+           type="text"
+           size="80"
+           maxlength="4000"
+           pattern=".{3,}" title="3 character minimum for Question"/>
+    <span class="invalid">{{$ctrl.item.errors.name}}</span>
+  </div>
+  <div class="inquiry-reply row col-lg-12" ng-show="inquiryform.$valid">
+    <label class="col-xs-3">Reply:</label>
+    <textarea class="col-xs-9"
+           name="inquiry-reply"
+           ng-model="$ctrl.item.reply"
+           ng-readonly="!$ctrl.authz.canUpdate"
+           type="text"
+           size="80"
+           maxlength="4000"/>
+    <span class="invalid">{{$ctrl.item.errors.reply}}</span>
+  </div>
+  <div class="inquiry-completed row col-lg-12"  ng-show="inquiryform.$valid">
+    <label class="col-xs-3">Completed:</label>
+    <input class="col-xs-9"
+           name="inquiry-completed"
+           ng-model="$ctrl.item.completed"
+           ng-readonly="!$ctrl.authz.canUpdate"
+           type="checkbox"/>
+    <span class="invalid">{{$ctrl.item.errors.reply}}</span>
+  </div>
+  <div class="inquiry-controls">
+    <span ng-show="$ctrl.authz.authenticated">
+      <button name="inquiry-create"
+              ng-show="!$ctrl.item.id && $ctrl.authz.canCreate"
+              type="submit"
+              ng-disabled="inquiryform.$invalid"
+              ng-click="$ctrl.create()">Create Inquiry</button>
+
+      <span ng-show="$ctrl.item.id">
+        <button name="inquiry-update"
+                type="submit"
+                ng-show="$ctrl.authz.canUpdate"
+                ng-disabled="!inquiryform.$dirty"
+                ng-click="$ctrl.update()">Update Inquiry</button>
+        <button name="inquiry-delete"
+                type="submit"
+                ng-show="$ctrl.authz.canDelete"
+                ng-click="$ctrl.remove()">Delete Inquiry</button>
+      </span>
+    </span>
+    <button name="image-clear"
+            type="submit"
+            ng-show="$ctrl.item.id || inquiryform.$dirty"
+            ng-click="$ctrl.clear()">Clear Inquiry</button>
+  </div>
+
+</form>
